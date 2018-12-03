@@ -8,12 +8,12 @@
           width=298
           height=29
           fill="wheat"
-          stroke="red"
+          stroke="green"
           stroke_width=2></rect>
 
-    @for (int i = LocalData.UsedColors_List.Count - 1; i > -1; i--)
-    {
-        <CompChildUsedColor par_id="@i"></CompChildUsedColor>
-    }
+        @foreach (var item in UsedColors_List)
+        {
+            <CompChildUsedColor parent="@this" par_color="@item"></CompChildUsedColor>
+        }
 
 </svg>

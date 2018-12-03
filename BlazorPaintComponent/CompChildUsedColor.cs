@@ -14,22 +14,26 @@ namespace BlazorPaintComponent
     {
 
         [Parameter]
-        protected int par_id { get; set; }
+        protected BlazorComponent parent { get; set; }
+
+        [Parameter]
+        protected string par_color { get; set; }
 
         public Action<string> ActionClicked { get; set; }
 
         private SvgHelper SvgHelper1 = new SvgHelper();
 
-
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+
+            int par_id = (parent as CompUsedColors).UsedColors_List.IndexOf(par_color);
+
             circle c = new circle()
             {
-               // id = "usedcolorcircle" + Guid.NewGuid().ToString("d").Substring(1, 4),
-                cx = (9-par_id) * 30 + 15,
+                cx = (9- par_id) * 30 + 15,
                 cy = 15,
                 r = 10,
-                fill = LocalData.UsedColors_List[par_id],
+                fill = par_color,
                 stroke = "black",
                 stroke_width = 1,
                 onclick = "notEmpty",
@@ -46,15 +50,13 @@ namespace BlazorPaintComponent
         protected override void OnAfterRender()
         {
             SvgHelper1.ActionClicked = ComponentClicked;
-            LocalData.Curr_CompChildUsedColor_List[par_id] = this;
-        }
+            (parent as CompUsedColors).Curr_CompChildUsedColor_List.Add(this);
 
+        }
 
         public void ComponentClicked(UIMouseEventArgs e)
         {
-
-            Console.WriteLine(LocalData.UsedColors_List[par_id]);
-            ActionClicked?.Invoke(LocalData.UsedColors_List[par_id]);
+            (parent as CompUsedColors).ColorSelected(par_color);
         }
 
 

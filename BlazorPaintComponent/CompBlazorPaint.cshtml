@@ -44,12 +44,12 @@
 
                 <input bind="@Color1" type="color" oninput="@cmd_ColorChange" />
 
-                <CompUsedColors></CompUsedColors>
+             <CompUsedColors ref="@Curr_CompUsedColors"></CompUsedColors>
 
                     <input bind="@LineWidth1" type="number" min="1" max="10" />
 
                     <div id="PaintArea1" width="1000" height="700" onmousedown="@cmd_onmousedown" onmousemove="@cmd_onmousemove" onmouseup="@cmd_onmouseup">
-                        <CompMySVG par_width="1000" par_height="700"></CompMySVG>
+                        <CompMySVG ref="@Curr_CompMySVG" parent="@this" par_width="1000" par_height="700"></CompMySVG>
 
                     </div>
 
@@ -57,12 +57,15 @@
             </td>
             <td>
                 <ul>
-                @foreach (var obj in LocalData.ObjectsList.OrderBy(x=>x.SequenceNumber))
+                    @if (ObjectsList.Any())
+                    {
+                @foreach (var obj in ObjectsList.OrderBy(x => x.SequenceNumber))
                 {
-            
-                <li>@(@obj.ObjectID +"_"+@obj.ObjectType.ToString())</li>
-            
+
+                <li>@(@obj.ObjectID + "_" + @obj.ObjectType.ToString())</li>
+
                 }
+                    }
 
             </ul>
                 </td>

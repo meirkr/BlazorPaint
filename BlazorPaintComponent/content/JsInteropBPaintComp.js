@@ -21,6 +21,9 @@ window.JsInteropBPaintComp = {
     alert: function (message) {
         return alert(message);
     },
+    log: function (message) {
+        return log(message);
+    },
     GetElementBoundingClientRect: function (obj) {
         let rect = document.getElementById(obj["id"]).getBoundingClientRect();
 

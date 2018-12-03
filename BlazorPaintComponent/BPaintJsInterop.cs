@@ -14,6 +14,14 @@ namespace BlazorPaintComponent
         }
 
 
+        public static Task<string> log(string message)
+        {
+
+            return JSRuntime.Current.InvokeAsync<string>(
+                "JsInteropBPaintComp.log",
+                message);
+        }
+
         public static Task<bool> GetElementBoundingClientRect(string id, DotNetObjectRef dotnethelper)
         {
 

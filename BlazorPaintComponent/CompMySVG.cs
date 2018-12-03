@@ -14,6 +14,7 @@ namespace BlazorPaintComponent
     public class CompMySVG: BlazorComponent, IDisposable
     {
 
+        [Parameter] protected BlazorComponent parent { get; set; }
 
         [Parameter]
         public double par_width { get; set; }
@@ -29,14 +30,11 @@ namespace BlazorPaintComponent
 
 
 
-        protected override void OnAfterRender()
-        {
+        //protected override void OnAfterRender()
+        //{
 
-            LocalData.Curr_CompMySVG = this;
-
-
-            base.OnAfterRender();
-        }
+        //    base.OnAfterRender();
+        //}
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
@@ -68,7 +66,7 @@ namespace BlazorPaintComponent
 
 
 
-            foreach (var item in LocalData.ObjectsList.OrderBy(x=>x.SequenceNumber))
+            foreach (var item in (parent as CompBlazorPaint).ObjectsList.OrderBy(x=>x.SequenceNumber))
             {
                 switch (item.ObjectType)
                 {

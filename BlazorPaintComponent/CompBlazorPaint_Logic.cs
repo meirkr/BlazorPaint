@@ -16,7 +16,14 @@ namespace BlazorPaintComponent
         int CurrObjectID = 0;
 
 
-        protected string Color1 = "#fc3807";
+        protected CompUsedColors_Logic Curr_CompUsedColors = new CompUsedColors_Logic();
+        protected CompMySVG Curr_CompMySVG = new CompMySVG();
+
+
+        public List<BPaintObject> ObjectsList = new List<BPaintObject>();
+
+
+        protected string Color1 = "#ffffff";//"#fc3807";
 
         protected int LineWidth1 = 3;
 
@@ -28,20 +35,7 @@ namespace BlazorPaintComponent
 
         protected override void OnInit()
         {
-            LocalData.UsedColors_List = new List<string>();
-            for (int i = 0; i < 9; i++)
-            {
-                LocalData.UsedColors_List.Add("white");
-            }
             
-            LocalData.UsedColors_List.Add(Color1);
-
-
-            for (int i = 0; i < 10; i++)
-            {
-                LocalData.Curr_CompChildUsedColor_List.Add(new CompChildUsedColor());
-
-            }
 
             base.OnInit();
         }
@@ -55,8 +49,8 @@ namespace BlazorPaintComponent
             {
                 GetBoundingClientRect("PaintArea1");
 
-                LocalData.Curr_CompUsedColors.ActionColorClicked = ColorSelected;
-                LocalData.Curr_CompUsedColors.Refresh();
+                Curr_CompUsedColors.ActionColorClicked = ColorSelected;
+
                 IsCompLoaded = true;
             }
 
@@ -73,9 +67,9 @@ namespace BlazorPaintComponent
 
         public void cmd_clear()
         {
-            if (LocalData.ObjectsList.Any())
+            if (ObjectsList.Any())
             {
-                LocalData.ObjectsList = new List<BPaintObject>();
+                ObjectsList = new List<BPaintObject>();
                 cmd_RefreshSVG();
             }
         }
@@ -83,9 +77,9 @@ namespace BlazorPaintComponent
 
         public void cmd_undo()
         {
-            if (LocalData.ObjectsList.Any())
+            if (ObjectsList.Any())
             {
-                LocalData.ObjectsList.Remove(LocalData.ObjectsList.Last());
+                ObjectsList.Remove(ObjectsList.Last());
                 cmd_RefreshSVG();
             }
         }
@@ -114,9 +108,9 @@ namespace BlazorPaintComponent
             BPaintHandDraw new_BPaintHandDraw = new BPaintHandDraw();
 
 
-            if (LocalData.ObjectsList.Any())
+            if (ObjectsList.Any())
             {
-                new_BPaintHandDraw.ObjectID = LocalData.ObjectsList.Max(x => x.ObjectID) + 1;
+                new_BPaintHandDraw.ObjectID = ObjectsList.Max(x => x.ObjectID) + 1;
             }
             else
             {
@@ -129,7 +123,7 @@ namespace BlazorPaintComponent
             new_BPaintHandDraw.data = new List<MyPoint>();
             new_BPaintHandDraw.data.Add(new MyPoint() { x = CurrPosition.x, y = CurrPosition.y });
 
-            LocalData.ObjectsList.Add(new_BPaintHandDraw);
+            ObjectsList.Add(new_BPaintHandDraw);
 
 
             CurrObjectID = new_BPaintHandDraw.ObjectID;
@@ -144,12 +138,12 @@ namespace BlazorPaintComponent
             BPaintLine new_BPaintLine = new BPaintLine();
 
 
-            if (LocalData.ObjectsList.Any())
+            if (ObjectsList.Any())
             {
-                new_BPaintLine.ObjectID = LocalData.ObjectsList.Max(x => x.ObjectID) + 1;
+                new_BPaintLine.ObjectID = ObjectsList.Max(x => x.ObjectID) + 1;
 
 
-                foreach (var item in LocalData.ObjectsList.Where(x => x.Selected))
+                foreach (var item in ObjectsList.Where(x => x.Selected))
                 {
                     item.Selected = false;
                 }  
@@ -170,7 +164,7 @@ namespace BlazorPaintComponent
             new_BPaintLine.width = LineWidth1;
             new_BPaintLine.start = new MyPoint() { x = CurrPosition.x, y = CurrPosition.y };
             new_BPaintLine.end = new_BPaintLine.start;
-            LocalData.ObjectsList.Add(new_BPaintLine);
+            ObjectsList.Add(new_BPaintLine);
 
 
             CurrObjectID = new_BPaintLine.ObjectID;
@@ -180,49 +174,60 @@ namespace BlazorPaintComponent
 
         public void cmd_onmousemove(UIMouseEventArgs e)
         {
-            if (modeCode == 1)
+            if (CurrObjectID > 0)
             {
-                cmd_draw(e);
-            }
+                BPaintJsInterop.log("a");
+                if (modeCode == 1)
+                {
+                    cmd_draw(e);
+                }
 
-            if (modeCode == 2)
-            {
-                cmd_Line(e);
+                if (modeCode == 2)
+                {
+                    cmd_Line(e);
+                }
             }
         }
 
 
         public void cmd_draw(UIMouseEventArgs e)
-        { 
-            MyPoint CurrPosition = new MyPoint() { x = e.ClientX - LocalData.SVGPosition.x, y = e.ClientY - LocalData.SVGPosition.y };
-
-
-            BPaintHandDraw Curr_Object = (BPaintHandDraw)LocalData.ObjectsList.Single(x => x.ObjectID == CurrObjectID);
-
-            if (Curr_Object.data.Any())
+        {
+            if (CurrObjectID > 0)
             {
 
-                MyPoint LastPoint = Curr_Object.data.Last();
 
-                if (LastPoint.x!= CurrPosition.x || LastPoint.y!= CurrPosition.y)
+                MyPoint CurrPosition = new MyPoint() { x = e.ClientX - LocalData.SVGPosition.x, y = e.ClientY - LocalData.SVGPosition.y };
+
+
+                BPaintHandDraw Curr_Object = (BPaintHandDraw)ObjectsList.Single(x => x.ObjectID == CurrObjectID);
+
+                if (Curr_Object.data.Any())
+                {
+
+                    MyPoint LastPoint = Curr_Object.data.Last();
+
+                    if (LastPoint.x != CurrPosition.x || LastPoint.y != CurrPosition.y)
+                    {
+                        Curr_Object.data.Add(CurrPosition);
+                        cmd_RefreshSVG();
+                    }
+                }
+                else
                 {
                     Curr_Object.data.Add(CurrPosition);
                     cmd_RefreshSVG();
                 }
             }
-            else
-            {
-                Curr_Object.data.Add(CurrPosition);
-                cmd_RefreshSVG();
-            }
         }
 
         public void cmd_Line(UIMouseEventArgs e)
         {
-            MyPoint CurrPosition = new MyPoint() { x = e.ClientX - LocalData.SVGPosition.x, y = e.ClientY - LocalData.SVGPosition.y };
+            if (CurrObjectID > 0)
+            {
+                MyPoint CurrPosition = new MyPoint() { x = e.ClientX - LocalData.SVGPosition.x, y = e.ClientY - LocalData.SVGPosition.y };
 
 
-            BPaintLine Curr_Object = (BPaintLine)LocalData.ObjectsList.Single(x => x.ObjectID == CurrObjectID);
+                BPaintLine Curr_Object = (BPaintLine)ObjectsList.Single(x => x.ObjectID == CurrObjectID);
 
 
                 if (Curr_Object.end.x != CurrPosition.x || Curr_Object.end.y != CurrPosition.y)
@@ -230,7 +235,7 @@ namespace BlazorPaintComponent
                     Curr_Object.end = CurrPosition;
                     cmd_RefreshSVG();
                 }
-            
+            }
         }
 
 
@@ -244,7 +249,7 @@ namespace BlazorPaintComponent
 
         void cmd_RefreshSVG()
         {
-            LocalData.Curr_CompMySVG.Refresh();
+            Curr_CompMySVG.Refresh();
             StateHasChanged();
 
         }
@@ -257,16 +262,17 @@ namespace BlazorPaintComponent
             {
                 Color1 = e.Value as string;
 
-                if (LocalData.UsedColors_List.Any(x => x == Color1))
+                if (Curr_CompUsedColors.UsedColors_List.Any(x => x == Color1))
                 {
-                    LocalData.UsedColors_List.Remove(LocalData.UsedColors_List.Single(x => x == Color1));
+                    Curr_CompUsedColors.UsedColors_List.Remove(Curr_CompUsedColors.UsedColors_List.Single(x => x == Color1));
                 }
 
-                if (LocalData.UsedColors_List.Count > 9)
+                if (Curr_CompUsedColors.UsedColors_List.Count > 9)
                 {
-                    LocalData.UsedColors_List.RemoveAt(0);
+                    Curr_CompUsedColors.UsedColors_List.RemoveAt(0);
                 }
-                LocalData.UsedColors_List.Add(Color1);
+
+                Curr_CompUsedColors.UsedColors_List.Add(Color1);
 
 
                 Cmd_RefreshUsedColorsSVG();
@@ -275,7 +281,7 @@ namespace BlazorPaintComponent
 
         public void Cmd_RefreshUsedColorsSVG()
         {
-            LocalData.Curr_CompUsedColors.Refresh();
+            Curr_CompUsedColors.Refresh();
             StateHasChanged();
         }
 
@@ -294,17 +300,17 @@ namespace BlazorPaintComponent
 
             bool returnZeroID = CurrObjectID == 0;
 
-            if (LocalData.ObjectsList.Any())
+            if (ObjectsList.Any())
             {
                 if (returnZeroID)
                 {
 
-                    CurrObjectID = LocalData.ObjectsList.Last().ObjectID;
+                    CurrObjectID = ObjectsList.Last().ObjectID;
     
                 }
                 
 
-                BPaintObject Curr_Object = LocalData.ObjectsList.Single(x => x.ObjectID == CurrObjectID);
+                BPaintObject Curr_Object = ObjectsList.Single(x => x.ObjectID == CurrObjectID);
 
 
                 switch (Par_Direction)
