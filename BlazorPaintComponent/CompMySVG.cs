@@ -72,13 +72,32 @@ namespace BlazorPaintComponent
                 {
                     case BPaintOpbjectType.HandDraw:
                         _Svg.Children.Add(drawPath(item as BPaintHandDraw));
+
+
+                        if (item.Selected)
+                        {
+                            MyPointRect p_rect = BPaintFunctions.Get_Border_Points(item as BPaintHandDraw);
+
+                            _Svg.Children.Add(new rect
+                            {
+                                x = p_rect.x,
+                                y = p_rect.y,
+                                width = p_rect.width,
+                                height = p_rect.height,
+                                fill = "none",
+                                stroke = "red",
+                                stroke_width = 1,
+                                style = "opacity:0.2",
+                            });
+                        }
+
                         break;
                     case BPaintOpbjectType.Line:
                         BPaintLine currLine = item as BPaintLine;
                         _Svg.Children.Add(drawLine(currLine));
                         if (item.Selected)
                         {
-                            _Svg.Children.Add(new circle()
+                            circle c1 = new circle()
                             {
                                 cx = currLine.start.x + currLine.PositionChange.x,
                                 cy = currLine.start.y + currLine.PositionChange.y,
@@ -86,9 +105,16 @@ namespace BlazorPaintComponent
                                 fill = "wheat",
                                 stroke = currLine.Color,
                                 stroke_width = 2,
-                            });
+                                
+                            };
 
-                            _Svg.Children.Add(new circle()
+                            if (currLine.Scale.x != 0 || currLine.Scale.y != 0)
+                            {
+                                c1.transform = "scale(" + currLine.Scale.x + "," + currLine.Scale.y + ")";
+                            }
+                            _Svg.Children.Add(c1);
+
+                            circle c2 = new circle()
                             {
                                 cx = currLine.end.x + currLine.PositionChange.x,
                                 cy = currLine.end.y + currLine.PositionChange.y,
@@ -96,6 +122,27 @@ namespace BlazorPaintComponent
                                 fill = "wheat",
                                 stroke = currLine.Color,
                                 stroke_width = 2,
+                            };
+
+                            if (currLine.Scale.x != 0 || currLine.Scale.y != 0)
+                            {
+                                c2.transform = "scale(" + currLine.Scale.x + "," + currLine.Scale.y + ")";
+                            }
+                            _Svg.Children.Add(c2);
+
+
+                            MyPointRect p_rect = BPaintFunctions.Get_Border_Points(item as BPaintLine);
+
+                            _Svg.Children.Add(new rect
+                            {
+                                x = p_rect.x,
+                                y = p_rect.y,
+                                width = p_rect.width,
+                                height = p_rect.height,
+                                fill = "none",
+                                stroke = "red",
+                                stroke_width = 1,
+                                style = "opacity:0.2",
                             });
                         }
 
@@ -112,7 +159,7 @@ namespace BlazorPaintComponent
 
         private line drawLine(BPaintLine Par_Object)
         {
-            return new line()
+            line l = new line()
             {
                 x1 = Par_Object.start.x + Par_Object.PositionChange.x,
                 y1 = Par_Object.start.y + Par_Object.PositionChange.y,
@@ -122,7 +169,19 @@ namespace BlazorPaintComponent
                 stroke = Par_Object.Color,
                 stroke_width = Par_Object.width,
                // stroke_linecap = strokeLinecap.round,
+
+               
+
+               
             };
+
+
+            if (Par_Object.Scale.x!=0 || Par_Object.Scale.y!=0)
+            {
+                l.transform = "scale(" + Par_Object.Scale.x + "," + Par_Object.Scale.y + ")";
+            }
+
+            return l;
         }
 
 
@@ -152,7 +211,7 @@ namespace BlazorPaintComponent
             }
 
 
-            return new path()
+            path p = new path()
             {
                 id = "path" + Par_Object.ObjectID,
                 fill = "none",
@@ -160,8 +219,17 @@ namespace BlazorPaintComponent
                 d = sb.ToString(),
                 // opacity = _opacity,
                 stroke_width = Par_Object.width,
+                
             };
 
+
+            if (Par_Object.Scale.x != 0 || Par_Object.Scale.y != 0)
+            {
+                p.transform = "scale(" + Par_Object.Scale.x + "," + Par_Object.Scale.y + ")";
+            }
+
+
+            return p;
         }
 
 

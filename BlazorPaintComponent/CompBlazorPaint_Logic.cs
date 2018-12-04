@@ -14,7 +14,7 @@ namespace BlazorPaintComponent
         bool IsCompLoaded = false;
 
         int CurrObjectID = 0;
-
+        protected double Curr_Scale = 1.0;
 
         protected CompUsedColors_Logic Curr_CompUsedColors = new CompUsedColors_Logic();
         protected CompMySVG Curr_CompMySVG = new CompMySVG();
@@ -99,7 +99,40 @@ namespace BlazorPaintComponent
 
         }
 
+        protected void cmd_scale(UIChangeEventArgs e)
+        {
+            if (e?.Value != null)
+            {
+                Curr_Scale =double.Parse(e.Value as string);
 
+
+                bool returnZeroID = CurrObjectID == 0;
+
+                if (ObjectsList.Any())
+                {
+                    if (returnZeroID)
+                    {
+
+                        CurrObjectID = ObjectsList.Last().ObjectID;
+
+                    }
+
+
+                    BPaintObject Curr_Object = ObjectsList.Single(x => x.ObjectID == CurrObjectID);
+
+                    Curr_Object.Scale.x = Curr_Scale;
+                    Curr_Object.Scale.y = Curr_Scale;
+
+
+                    cmd_RefreshSVG();
+
+                    if (returnZeroID)
+                    {
+                        CurrObjectID = 0;
+                    }
+                }
+            }
+        }
 
         public void cmd_prepareDraw(UIMouseEventArgs e)
         {
@@ -111,6 +144,11 @@ namespace BlazorPaintComponent
             if (ObjectsList.Any())
             {
                 new_BPaintHandDraw.ObjectID = ObjectsList.Max(x => x.ObjectID) + 1;
+
+                foreach (var item in ObjectsList.Where(x => x.Selected))
+                {
+                    item.Selected = false;
+                }
             }
             else
             {
@@ -118,6 +156,7 @@ namespace BlazorPaintComponent
             }
 
             new_BPaintHandDraw.ObjectType = BPaintOpbjectType.HandDraw;
+            new_BPaintHandDraw.Selected = true;
             new_BPaintHandDraw.Color = Color1;
             new_BPaintHandDraw.width = LineWidth1;
             new_BPaintHandDraw.data = new List<MyPoint>();

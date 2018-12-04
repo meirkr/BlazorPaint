@@ -13,6 +13,9 @@ namespace BlazorPaintComponent.classes
 
         MyPoint PositionChange { get; set; }
 
+
+        MyPoint Scale { get; set; }
+
         BPaintOpbjectType ObjectType { get; set; }
     }
 }

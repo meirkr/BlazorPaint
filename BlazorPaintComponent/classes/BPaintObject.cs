@@ -11,6 +11,7 @@ namespace BlazorPaintComponent.classes
         public bool Selected { get; set; }
         public int SequenceNumber { get; set; }
         public MyPoint PositionChange { get; set; } = new MyPoint() { x = 0, y = 0 };
+        public MyPoint Scale { get; set; } = new MyPoint() { x = 0, y = 0 };
         public BPaintOpbjectType ObjectType { get; set; }
 
     }
