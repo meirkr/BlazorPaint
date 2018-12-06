@@ -5,14 +5,18 @@ using System.Threading.Tasks;
 
 namespace BlazorPaintComponent.classes
 {
+    [Serializable]
     public class BPaintHandDraw: BPaintObject
     {
-
+        public MyPoint StartPosition { get; set; }
         public List<MyPoint> data;
-        public string Color;
-        public double width;
+        
+        public bool IsValid()
+        {
 
+            return (data.Any());
 
+        }
 
     }
 }

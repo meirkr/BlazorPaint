@@ -5,12 +5,19 @@ using System.Threading.Tasks;
 
 namespace BlazorPaintComponent.classes
 {
+    [Serializable]
     public class BPaintLine : BPaintObject
     {
-        public MyPoint start;
+        
         public MyPoint end;
-        public string Color;
-        public double width;
+        
+
+        public bool IsValid()
+        {
+
+            return (!end.Equals(StartPosition));
+
+        }
 
     }
 }

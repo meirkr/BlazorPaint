@@ -5,12 +5,18 @@ using System.Threading.Tasks;
 
 namespace BlazorPaintComponent.classes
 {
+    [Serializable]
     public class MyPoint
     {
         public double x { get; set; }
         public double y { get; set; }
 
+        public MyPoint(double _x, double _y)
+        {
+            x = _x;
+            y = _y;
 
+        }
 
     }
 

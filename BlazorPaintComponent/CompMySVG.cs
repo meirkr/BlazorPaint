@@ -17,10 +17,10 @@ namespace BlazorPaintComponent
         [Parameter] protected BlazorComponent parent { get; set; }
 
         [Parameter]
-        public double par_width { get; set; }
+        protected double par_width { get; set; }
 
         [Parameter]
-        public double par_height { get; set; }
+        protected double par_height { get; set; }
 
        
         svg _Svg = null;
@@ -29,12 +29,6 @@ namespace BlazorPaintComponent
         SvgHelper SvgHelper1 = new SvgHelper();
 
 
-
-        //protected override void OnAfterRender()
-        //{
-
-        //    base.OnAfterRender();
-        //}
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
@@ -99,8 +93,8 @@ namespace BlazorPaintComponent
                         {
                             circle c1 = new circle()
                             {
-                                cx = currLine.start.x + currLine.PositionChange.x,
-                                cy = currLine.start.y + currLine.PositionChange.y,
+                                cx = currLine.StartPosition.x + currLine.PositionChange.x,
+                                cy = currLine.StartPosition.y + currLine.PositionChange.y,
                                 r = currLine.width * 1.5,
                                 fill = "wheat",
                                 stroke = currLine.Color,
@@ -161,8 +155,8 @@ namespace BlazorPaintComponent
         {
             line l = new line()
             {
-                x1 = Par_Object.start.x + Par_Object.PositionChange.x,
-                y1 = Par_Object.start.y + Par_Object.PositionChange.y,
+                x1 = Par_Object.StartPosition.x + Par_Object.PositionChange.x,
+                y1 = Par_Object.StartPosition.y + Par_Object.PositionChange.y,
                 x2 = Par_Object.end.x + Par_Object.PositionChange.x,
                 y2 = Par_Object.end.y + Par_Object.PositionChange.y,
                // opacity = 1,
@@ -194,20 +188,18 @@ namespace BlazorPaintComponent
 
 
             sb.Append("M");
-            sb.Append(Par_Object.data[0].x + Par_Object.PositionChange.x);
+            sb.Append(Par_Object.StartPosition.x + Par_Object.PositionChange.x);
             sb.Append(" ");
-            sb.Append(Par_Object.data[0].y + Par_Object.PositionChange.y);
+            sb.Append(Par_Object.StartPosition.y + Par_Object.PositionChange.y);
             sb.Append(" ");
 
-            for (int i = 1; i < Par_Object.data.Count; i++)
+            for (int i = 0; i < Par_Object.data.Count; i++)
             {
                 sb.Append("L");
                 sb.Append(Par_Object.data[i].x + Par_Object.PositionChange.x);
                 sb.Append(" ");
                 sb.Append(Par_Object.data[i].y + Par_Object.PositionChange.y);
                 sb.Append(" ");
-
-               
             }
 
 

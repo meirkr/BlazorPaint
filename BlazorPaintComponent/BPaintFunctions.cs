@@ -1,7 +1,10 @@
 ﻿using BlazorPaintComponent.classes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 
 namespace BlazorPaintComponent
@@ -12,12 +15,25 @@ namespace BlazorPaintComponent
         public static MyPointRect Get_Border_Points(BPaintHandDraw Par_obj)
         {
 
+
+
+
             MyPointRect result = new MyPointRect();
 
-            result.x = Par_obj.data.Min(j => j.x);
-            result.y = Par_obj.data.Min(j => j.y);
-            result.width = Par_obj.data.Max(j => j.x) - result.x;
-            result.height = Par_obj.data.Max(j => j.y) - result.y;
+
+            List<MyPoint> data = Par_obj.data.ToList();
+            data.Add(Par_obj.StartPosition);
+
+            result.x = data.Min(j => j.x);
+            result.y = data.Min(j => j.y);
+            result.width = data.Max(j => j.x) - result.x;
+            result.height = data.Max(j => j.y) - result.y;
+
+
+            result.x += Par_obj.PositionChange.x;
+            result.y += Par_obj.PositionChange.y;
+
+
 
             Set_Padding(result);
 
@@ -34,13 +50,16 @@ namespace BlazorPaintComponent
 
 
             List<MyPoint> data = new List<MyPoint>();
-            data.Add(Par_obj.start);
+            data.Add(Par_obj.StartPosition);
             data.Add(Par_obj.end);
 
             result.x = data.Min(j => j.x);
             result.y = data.Min(j => j.y);
             result.width = data.Max(j => j.x) - result.x;
             result.height = data.Max(j => j.y) - result.y;
+
+            result.x += Par_obj.PositionChange.x;
+            result.y += Par_obj.PositionChange.y;
 
             Set_Padding(result);
 
@@ -63,5 +82,32 @@ namespace BlazorPaintComponent
           
 
         }
+
+
+       
+
+
+        public static T CopyObject<T>(object objSource)
+
+        {
+
+            using (MemoryStream stream = new MemoryStream())
+
+            {
+
+                BinaryFormatter formatter = new BinaryFormatter();
+
+                formatter.Serialize(stream, objSource);
+
+                stream.Position = 0;
+
+                return (T)formatter.Deserialize(stream);
+
+            }
+
         }
+
+    
+
+    }
 }

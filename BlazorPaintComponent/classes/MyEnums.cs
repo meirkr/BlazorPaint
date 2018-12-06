@@ -7,10 +7,6 @@ namespace BlazorPaintComponent.classes
 {
     public class MyEnums
     {
-
-       
-
-
     }
 
 
@@ -31,5 +27,15 @@ namespace BlazorPaintComponent.classes
         down = 3,
 
     }
+
+    public enum BPaintMode
+    {
+        none = 0,
+        draw = 1,
+        edit = 2,
+        
+
+    }
+
 
 }

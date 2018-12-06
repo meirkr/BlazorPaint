@@ -10,12 +10,12 @@ namespace BlazorPaintComponent
     public static class LocalData
     {
 
-        public static MyPoint SVGPosition = new MyPoint() { x = 0, y = 0 };
+        public static MyPoint SVGPosition = new MyPoint(0, 0);
 
         [JSInvokable]
         public static void invokeFromjs_UpdateSVGPosition(double par_x, double par_y)
         {
-            SVGPosition = new MyPoint() { x = par_x, y = par_y };
+            SVGPosition = new MyPoint(par_x, par_y);
 
         }
 
