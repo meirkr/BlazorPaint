@@ -41,9 +41,15 @@ namespace BlazorPaintComponent
 
         protected override void OnInit()
         {
-            
-
+            BlazorWindowHelper.BlazorWindowHelper.OnScroll = OnScroll;
+            BlazorWindowHelper.BlazorWindowHelper.OnResize = OnScroll;
             base.OnInit();
+        }
+
+
+        protected void OnScroll()
+        {
+            BPaintJsInterop.UpdateSVGPosition("PaintArea1");
         }
 
 

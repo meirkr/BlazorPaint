@@ -24,6 +24,9 @@
     <Reference Include="BlazorSvgHelper">
       <HintPath>..\..\BlazorSvgHelper\BlazorSvgHelper\bin\Debug\netstandard2.0\BlazorSvgHelper.dll</HintPath>
     </Reference>
+    <Reference Include="BlazorWindowHelper">
+      <HintPath>..\..\BlazorWindowHelper\bin\Debug\netstandard2.0\BlazorWindowHelper.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

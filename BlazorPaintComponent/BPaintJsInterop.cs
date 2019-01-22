@@ -30,6 +30,13 @@ namespace BlazorPaintComponent
                 new { id, dotnethelper });
         }
 
+        public static Task<bool> UpdateSVGPosition(string id)
+        {
+     
+            return JSRuntime.Current.InvokeAsync<bool>(
+                "JsInteropBPaintComp.UpdateSVGPosition", id);
+        }
+
 
         public static Task<bool> SetCursor(string cursorStyle = "default")
         {
