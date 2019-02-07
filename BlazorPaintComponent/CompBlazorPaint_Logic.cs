@@ -40,6 +40,8 @@ namespace BlazorPaintComponent
 
         protected override void OnInit()
         {
+            BlazorWindowHelper.BlazorWindowHelper.Initialize();
+            BlazorWindowHelper.BWHJsInterop.SetOnOrOff(true);
             BlazorWindowHelper.BlazorWindowHelper.OnScroll = OnScroll;
             BlazorWindowHelper.BlazorWindowHelper.OnResize = OnScroll;
             base.OnInit();
