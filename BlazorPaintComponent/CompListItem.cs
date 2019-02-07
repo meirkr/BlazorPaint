@@ -1,6 +1,6 @@
 ﻿using BlazorPaintComponent.classes;
-using Microsoft.AspNetCore.Blazor.Components;
-using Microsoft.AspNetCore.Blazor.RenderTree;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlazorPaintComponent
 {
-    public class CompListItem : BlazorComponent, IDisposable
+    public class CompListItem : ComponentBase, IDisposable
     {
 
         [Parameter]
@@ -16,7 +16,7 @@ namespace BlazorPaintComponent
 
 
         [Parameter]
-        protected BlazorComponent parent { get; set; }
+        protected ComponentBase parent { get; set; }
 
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)

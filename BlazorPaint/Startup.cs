@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Blazor.Builder;
+using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace BlazorPaint.App
+namespace BlazorPaint
 {
     public class Startup
     {
@@ -13,7 +13,7 @@ namespace BlazorPaint.App
            // services.AddSingleton<WeatherForecastService>();
         }
 
-        public void Configure(IBlazorApplicationBuilder app)
+        public void Configure(IComponentsApplicationBuilder app)
         {
             app.AddComponent<App>("app");
         }

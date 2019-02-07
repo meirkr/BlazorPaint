@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
-namespace BlazorPaint.App
+namespace BlazorPaint
 {
     public class Program
     {

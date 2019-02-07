@@ -1,8 +1,7 @@
 ﻿using BlazorSvgHelper;
 using BlazorSvgHelper.Classes.SubClasses;
-using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
-using Microsoft.AspNetCore.Blazor.RenderTree;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace BlazorPaintComponent
 {
-    public class CompChildUsedColor : BlazorComponent
+    public class CompChildUsedColor : ComponentBase
     {
 
         [Parameter]
-        protected BlazorComponent parent { get; set; }
+        protected ComponentBase parent { get; set; }
 
         [Parameter]
-        protected string par_color { get; set; }
+        protected string color { get; set; }
 
         public Action<string> ActionClicked { get; set; }
 
@@ -25,15 +24,15 @@ namespace BlazorPaintComponent
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-
-            int par_id = (parent as CompUsedColors).UsedColors_List.IndexOf(par_color);
-
+            Console.WriteLine(color.ToString());
+            int par_id = (parent as CompUsedColors).UsedColors_List.IndexOf(color);
+            Console.WriteLine(par_id.ToString());
             circle c = new circle()
             {
-                cx = (9- par_id) * 30 + 15,
+                cx = (9 - par_id) * 30 + 15,
                 cy = 15,
                 r = 10,
-                fill = par_color,
+                fill = color,
                 stroke = "black",
                 stroke_width = 1,
                 onclick = "notEmpty",
@@ -56,7 +55,7 @@ namespace BlazorPaintComponent
 
         public void ComponentClicked(UIMouseEventArgs e)
         {
-            (parent as CompUsedColors).ColorSelected(par_color);
+            (parent as CompUsedColors).ColorSelected(color);
         }
 
 

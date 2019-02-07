@@ -1,7 +1,7 @@
 ﻿using BlazorSvgHelper;
 using BlazorSvgHelper.Classes.SubClasses;
-using Microsoft.AspNetCore.Blazor.Components;
-using Microsoft.AspNetCore.Blazor.RenderTree;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 
 namespace BlazorPaintComponent
 {
-    public class CompUsedColors_Logic : BlazorComponent, IDisposable
+    public class CompUsedColors_Logic : ComponentBase, IDisposable
     {
         public List<string> UsedColors_List = new List<string>()
-        { "green", "white","red", "blue", "yellow", "gray", "silver","brown", "gold", "black"};
+        { "#008000", "#FFFFFF","#FF0000", "#0000FF", "#FFFF00", "#808080", "#C0C0C0","#A52A2A", "#FFD700", "#000000"};
+        
         public List<CompChildUsedColor> Curr_CompChildUsedColor_List = new List<CompChildUsedColor>();
 
         public Action<string> ActionColorClicked { get; set; }
@@ -21,10 +22,10 @@ namespace BlazorPaintComponent
 
         protected override void OnInit()
         {
-            for (int i = 0; i < UsedColors_List.Count; i++)
-            {
-                UsedColors_List[i] = Get_Hex_Code_From_Color_Name(UsedColors_List[i]);
-            }
+            //for (int i = 0; i < UsedColors_List.Count; i++)
+            //{
+            //    UsedColors_List[i] = Get_Hex_Code_From_Color_Name(UsedColors_List[i]);
+            //}
 
             base.OnInit();
         }
@@ -32,7 +33,9 @@ namespace BlazorPaintComponent
 
         private string Get_Hex_Code_From_Color_Name(string name)
         {
+           
             Color c = Color.FromName(name);
+
             return string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B); ;
 
         }

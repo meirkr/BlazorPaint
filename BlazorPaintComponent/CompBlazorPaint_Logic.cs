@@ -1,6 +1,5 @@
 ﻿using BlazorPaintComponent.classes;
-using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlazorPaintComponent
 {
-    public class CompBlazorPaint_Logic: BlazorComponent
+    public class CompBlazorPaint_Logic: ComponentBase
     {
         bool IsCompLoaded = false;
 

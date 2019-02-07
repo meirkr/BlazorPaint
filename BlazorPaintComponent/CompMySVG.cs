@@ -1,8 +1,8 @@
 ﻿using BlazorPaintComponent.classes;
 using BlazorSvgHelper;
 using BlazorSvgHelper.Classes.SubClasses;
-using Microsoft.AspNetCore.Blazor.Components;
-using Microsoft.AspNetCore.Blazor.RenderTree;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace BlazorPaintComponent
 {
-    public class CompMySVG: BlazorComponent, IDisposable
+    public class CompMySVG: ComponentBase, IDisposable
     {
 
-        [Parameter] protected BlazorComponent parent { get; set; }
+        [Parameter] protected ComponentBase parent { get; set; }
 
         [Parameter]
         protected double par_width { get; set; }
